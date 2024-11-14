@@ -1,0 +1,27 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+
+def extended_six_hump_camel(x, y, z):
+    return (4 - 2.1 * x**2 + (x**4) / 3) * x**2 + x * y + (4 * y**2 - 4) * y**2 + z**2 + x * z + y * z
+
+x = np.linspace(-2, 2, 400)
+y = np.linspace(-1, 1, 400)
+X, Y = np.meshgrid(x, y)
+Z_fixed = 0  # Fixed z value for visualization
+Z = extended_six_hump_camel(X, Y, Z_fixed)
+
+vmin = np.min(Z)
+vmax = 3.2  # Set vmax lower to start the yellow color earlier
+norm = mcolors.Normalize(vmin=vmin, vmax=vmax)
+
+plt.figure()
+contour_filled = plt.contourf(X, Y, Z, cmap='viridis', levels=50, norm=norm)
+contour_lines = plt.contour(X, Y, Z, levels=80, colors='black', linewidths=0.65, linestyles='solid')  # Ensure all lines are solid
+
+plt.colorbar(contour_filled)
+plt.title('Contour Map of Extended Six-Hump Camelback Function')
+plt.xlabel('x')
+plt.ylabel('y')
+
+plt.show()
