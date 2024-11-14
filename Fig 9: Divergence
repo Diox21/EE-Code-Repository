@@ -1,0 +1,37 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return x**2
+
+y_targets_diverge = [60, 65, 70, 80, 100]
+
+x_targets_diverge = [(-1)**(i+1) * np.sqrt(y) for i, y in enumerate(y_targets_diverge)]
+
+xs_diverge = np.array(x_targets_diverge)
+ys_diverge = np.array(y_targets_diverge)
+
+x_values = np.linspace(-10, 10, 400)
+y_values = f(x_values)
+
+plt.figure(figsize=(6, 5))
+plt.plot(x_values, y_values, label='y = x^2', color='blue')
+
+plt.plot(xs_diverge, ys_diverge, 'r-o', label='Diverging Path', markersize=5)
+
+plt.scatter(xs_diverge[0], ys_diverge[0], color='red', s=100, zorder=5)
+plt.text(xs_diverge[0], ys_diverge[0] + 5, 'Starting Point', fontsize=12, color='red', ha='center')
+
+plt.title('Gradient Descent on Quadratic Function\nDiverging Behavior', pad=20)
+
+plt.xticks([])
+plt.yticks([])
+plt.grid(False)
+
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+
+plt.xlim(-10, 10)
+plt.ylim(0, 100)
+
+plt.show()
