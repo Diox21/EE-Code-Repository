@@ -1,0 +1,41 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return x**2
+
+y_targets = [60, 35, 25, 16, 10, 5, 2, 1, 0.5, 0.1, 0.01]
+
+x_targets = [(-1)**(i+1) * np.sqrt(y) for i, y in enumerate(y_targets)]
+
+xs = np.array(x_targets)
+ys = np.array(y_targets)
+
+x_values = np.linspace(-10, 10, 400)
+y_values = f(x_values)
+
+plt.figure(figsize=(6, 5))
+plt.plot(x_values, y_values, label='y = x^2', color='blue')
+
+plt.plot(xs, ys, 'r-o', label='Gradient Descent Path', markersize=5)
+
+plt.scatter(xs[0], ys[0], color='red', s=100, zorder=5)
+plt.text(xs[0], ys[0] + 5, 'Starting Point', fontsize=12, color='red', ha='center')
+
+plt.annotate('Convergence', xy=(0, 0), xytext=(-6, 30),
+             arrowprops=dict(facecolor='blue', shrink=0.05, width=1, headwidth=10),
+             fontsize=12, color='blue', ha='center')
+
+plt.title('Gradient Descent on Quadratic Function\nLearning Rate: 0.6', pad=20)
+
+plt.xticks([])
+plt.yticks([])
+plt.grid(False)
+
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+
+plt.xlim(-10, 10)
+plt.ylim(0, 70)
+
+plt.show()
