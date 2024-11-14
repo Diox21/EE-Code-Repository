@@ -1,0 +1,57 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return x**2
+
+def gradient_descent(starting_point, learning_rate, num_steps):
+    x = starting_point
+    path = [x]
+    for _ in range(num_steps):
+        grad = f_prime(x)
+        x = x - learning_rate * grad
+        path.append(x)
+    return path
+
+def f_prime(x):
+    return 2 * x
+
+starting_point = -np.sqrt(60)
+learning_rate = 0.1
+num_steps = 15  # Fewer steps for faster convergence
+
+path = gradient_descent(starting_point, learning_rate, num_steps)
+xs = np.array(path)
+ys = f(xs)
+
+x_values = np.linspace(-10, 10, 400)
+y_values = f(x_values)
+
+plt.figure(figsize=(8, 6))
+plt.plot(x_values, y_values, label='y = x^2', color='black')
+
+plt.plot(xs, ys, 'r-o', label='Gradient Descent Path', markersize=5)
+
+plt.scatter(starting_point, f(starting_point), color='red', s=100, zorder=5)
+plt.text(starting_point, f(starting_point) + 5, 'Starting Point', fontsize=12, color='red', ha='center')
+
+plt.annotate('Convergence', xy=(0, 0), xytext=(-4, 40),
+             arrowprops=dict(facecolor='blue', shrink=0.05, width=1, headwidth=10),
+             fontsize=12, color='blue', ha='center')
+
+plt.xlabel('x')
+plt.ylabel('y = f(x)')
+plt.title('Gradient Descent on Quadratic Function\nLearning Rate = 0.1', pad=20)
+
+plt.xticks([])
+plt.yticks([])
+plt.grid(False)
+
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+
+plt.xlim(-10, 10)
+plt.ylim(0, 120)
+plt.legend()
+
+plt.show()
