@@ -1,0 +1,47 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def extended_six_hump_camelback(x, y):
+    return ((4 - 2.1 * x**2 + (x**4) / 3) * x**2 + x * y + (4 * y**2 - 4) * y**2)
+
+fourth_point = (0.565, 0.122)  # Replace with the exact coordinates if needed
+z_fourth_point = extended_six_hump_camelback(fourth_point[0], fourth_point[1])
+
+global_min_adjusted = (0, -0.75)
+z_global_min_adjusted = extended_six_hump_camelback(*global_min_adjusted)
+
+intermediate_point1 = (0.25, -0.6)
+z_intermediate1 = extended_six_hump_camelback(*intermediate_point1)
+
+x_path_mimic = [fourth_point[0], intermediate_point1[0], global_min_adjusted[0]]
+y_path_mimic = [fourth_point[1], intermediate_point1[1], global_min_adjusted[1]]
+z_path_mimic = [z_fourth_point, z_intermediate1, z_global_min_adjusted]
+
+x_vals = np.linspace(-2, 2, 400)
+y_vals = np.linspace(-1.5, 1.5, 400)
+X, Y = np.meshgrid(x_vals, y_vals)
+Z = extended_six_hump_camelback(X, Y)
+
+Z_adjusted = np.clip(Z, -1, 5)
+
+fig = plt.figure(figsize=(8, 6))
+ax = fig.add_subplot(111, projection='3d')
+
+surface = ax.plot_surface(X, Y, Z_adjusted, cmap='viridis', edgecolor='none', alpha=0.5)
+
+fig.colorbar(surface, ax=ax, shrink=0.5, aspect=5)
+
+ax.scatter(fourth_point[0], fourth_point[1], z_fourth_point, color='red', s=50, label='Point Before GD Saddle Point')
+ax.scatter(global_min_adjusted[0], global_min_adjusted[1], z_global_min_adjusted, color='green', s=50, label='Global Minimum')
+ax.plot(x_path_mimic, y_path_mimic, z_path_mimic, 'b--o', label='Automated Descent Path')
+
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('f(x, y)')
+
+ax.view_init(elev=50, azim=-28)
+ax.set_zlim(-1, 5)
+ax.set_ylim(-1, 1)
+
+plt.legend()
+plt.show()
